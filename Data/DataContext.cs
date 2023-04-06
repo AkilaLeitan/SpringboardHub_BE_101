@@ -22,6 +22,7 @@ namespace SpringboardHub_BE_101.Data
         public DbSet<Lecture> Lecture => Set<Lecture>();
         public DbSet<Title> Title => Set<Title>();
         public DbSet<Article> Article => Set<Article>();
+        public DbSet<Admin> Admin => Set<Admin>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

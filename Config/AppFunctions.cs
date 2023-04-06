@@ -37,5 +37,10 @@ namespace SpringboardHub_BE_101.Config
             return string.IsNullOrEmpty(input);
         }
     }
-    
+
+    public class NoParam
+    {
+
+    }
+
 }
