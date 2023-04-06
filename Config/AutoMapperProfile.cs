@@ -13,8 +13,10 @@ namespace SpringboardHub_BE_101.Config
             CreateMap<Admin, ResponseUserAdminDetails>();
             CreateMap<Course, ResponseCourseDetails>();
             CreateMap<Student, ResponseUserStudentDetails>();
+            CreateMap<Enrollment, ResponseEnrollementDetails>().ForMember(e => e.EnrolledDate, o => o.MapFrom(s => s.CreatedDate));
             CreateMap<RequestAddBatch, Batch>();
             CreateMap<RequestAddCourse, Course>();
+            CreateMap<RequestAddEnrollemnt, Enrollment>();
         }
     }
 }

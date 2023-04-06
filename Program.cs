@@ -18,6 +18,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using SpringboardHub_BE_101.Service.CourseService;
 using SpringboardHub_BE_101.Service.StudentService;
+using SpringboardHub_BE_101.Service.EnrollmentService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +60,7 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IBatchService, BatchService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 
 var app = builder.Build();
 

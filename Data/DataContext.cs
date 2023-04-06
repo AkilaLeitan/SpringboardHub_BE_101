@@ -51,6 +51,10 @@ namespace SpringboardHub_BE_101.Data
             .HasOne(s => s.SubjectInSyllabus)
             .WithOne(l => l.Lecture)
             .HasForeignKey<SubjectInSyllabus>(ss => ss.LectureID);
+
+            modelBuilder.Entity<Enrollment>()
+            .Property(e => e.EnrollmentID)
+            .ValueGeneratedOnAdd();
         }
     }
 }
