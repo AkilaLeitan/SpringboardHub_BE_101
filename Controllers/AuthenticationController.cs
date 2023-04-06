@@ -31,6 +31,12 @@ namespace SpringboardHub_BE_101.Controllers
             return Ok(await _authRepo.AdminRegister(admin, newAdmin.Password));
         }
 
+        [HttpPost("Register/Student")]
+        public async Task<ActionResult<ServiceResponse<ResponseUserStudentDetails>>> StudentRegister(RequestAddUserStudent newStudent)
+        {
+            return Ok(await _authRepo.StudentRegister(newStudent, newStudent.Password));
+        }
+
         [HttpPost("Login")]
         public async Task<ActionResult<ServiceResponse<int>>> Login(RequestUserLogin loginUser)
         {

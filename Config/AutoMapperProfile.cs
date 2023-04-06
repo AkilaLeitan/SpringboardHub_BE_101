@@ -12,6 +12,7 @@ namespace SpringboardHub_BE_101.Config
             CreateMap<Batch, ResponseBatchDetails>();
             CreateMap<Admin, ResponseUserAdminDetails>();
             CreateMap<Course, ResponseCourseDetails>();
+            CreateMap<Student, ResponseUserStudentDetails>();
             CreateMap<RequestAddBatch, Batch>();
             CreateMap<RequestAddCourse, Course>();
         }

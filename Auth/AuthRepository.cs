@@ -67,6 +67,69 @@ namespace SpringboardHub_BE_101.Auth
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<ResponseUserStudentDetails>> StudentRegister(RequestAddUserStudent newStudent, string password)
+        {
+            var serviceResponse = new ServiceResponse<ResponseUserStudentDetails>();
+
+            try
+            {
+                var student = new Student();
+                var batchRecode = _context.Batch.Find(newStudent.BatchID);
+                if (batchRecode is null)
+                {
+                    throw new Exception("Batch is not Found");
+                }
+                else
+                {
+                    student.Password = GeneratePassword(password);
+                    student.UID = GenerateStudentUID(batchRecode.UID, newStudent.JoinedYear);
+                    student.UserName = student.UID;
+                    student.UserType = UserTypes.Student;
+                    student.CreatedDate = DateTime.Now;
+                    student.Batch = batchRecode;
+                    student.FirstName = newStudent.FirstName;
+                    student.LastName = newStudent.LastName;
+                    student.Telephone = newStudent.Telephone;
+                    student.Email = newStudent.Email;
+                    student.NIC = newStudent.NIC;
+                    student.Guardian = newStudent.Guardian;
+                    student.DOB = newStudent.DOB;
+                    student.JoinedYear = newStudent.JoinedYear;
+                }
+
+                //Student User Validations
+                if (!AppFunctions.EmailValidater(student.Email))
+                {
+                    throw new Exception("Email not valid");
+                }
+
+                if (!AppFunctions.TelephoneValidater(student.Telephone))
+                {
+                    throw new Exception("Telephone number not valid");
+                }
+
+                if (AppFunctions.StringNullOrEmpty(student.FirstName) || AppFunctions.StringNullOrEmpty(student.LastName))
+                {
+                    throw new Exception("name cannot be null or empty");
+                }
+
+                _context.Student.Add(student);
+                await _context.SaveChangesAsync();
+
+                serviceResponse.ResponseCode = AppConstants.DEFAULT_RESPONSE_CODE_SUCCSSES;
+                serviceResponse.ResponseMessage = AppConstants.DEFAULT_RESPONSE_MESSAGE_SUCCSSES;
+                serviceResponse.Payload = _mapper.Map<ResponseUserStudentDetails>(_context.Student.OrderByDescending(s => s.StudentID).FirstOrDefault());
+
+            }
+            catch (Exception e)
+            {
+                serviceResponse.ResponseCode = AppConstants.DEFAULT_RESPONSE_CODE_SERVERSIDE_ERROR;
+                serviceResponse.ResponseMessage = e.ToString();
+            }
+
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<ResponseAuth>> Login(RequestUserLogin loginUser)
         {
             var serviceResponse = new ServiceResponse<ResponseAuth>();

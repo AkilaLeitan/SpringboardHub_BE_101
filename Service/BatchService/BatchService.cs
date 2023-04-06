@@ -138,7 +138,7 @@ namespace SpringboardHub_BE_101.Service.BatchService
             int year = DateTime.Now.Year;
             int lastID = 1;
 
-            if (_context.Course.Any())
+            if (_context.Batch.Any())
             {
                 lastID = _context.Batch
                 .OrderByDescending(b => b.BatchID)
