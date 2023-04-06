@@ -17,11 +17,13 @@ namespace SpringboardHub_BE_101.Config
             CreateMap<Syllabus, ResponseSyllabusDetails>();
             CreateMap<Subject, ResponseSubjectDetails>();
             CreateMap<Lecture, ResponseUserLectureDetails>();
+            CreateMap<Title, ResponseTitleDetails>();
             CreateMap<RequestAddBatch, Batch>();
             CreateMap<RequestAddCourse, Course>();
             CreateMap<RequestAddEnrollemnt, Enrollment>();
             CreateMap<RequestAddSyllabus, Syllabus>();
             CreateMap<RequestAddSubject, Subject>();
+            CreateMap<RequestAddTitle, Title>();
         }
     }
 }

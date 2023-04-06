@@ -21,6 +21,8 @@ using SpringboardHub_BE_101.Service.StudentService;
 using SpringboardHub_BE_101.Service.EnrollmentService;
 using SpringboardHub_BE_101.Service.SyllabusService;
 using SpringboardHub_BE_101.Service.SubjectService;
+using SpringboardHub_BE_101.Service.LectureService;
+using SpringboardHub_BE_101.Service.TitleService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +67,8 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 builder.Services.AddScoped<ISyllabusService, SyllabusService>();
 builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<ILectureService, LectureService>();
+builder.Services.AddScoped<ITitleService, TitleService>();
 
 var app = builder.Build();
 
