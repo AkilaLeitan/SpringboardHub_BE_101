@@ -19,6 +19,7 @@ using Swashbuckle.AspNetCore.Filters;
 using SpringboardHub_BE_101.Service.CourseService;
 using SpringboardHub_BE_101.Service.StudentService;
 using SpringboardHub_BE_101.Service.EnrollmentService;
+using SpringboardHub_BE_101.Service.SyllabusService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,6 +62,7 @@ builder.Services.AddScoped<IBatchService, BatchService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
+builder.Services.AddScoped<ISyllabusService, SyllabusService>();
 
 var app = builder.Build();
 
