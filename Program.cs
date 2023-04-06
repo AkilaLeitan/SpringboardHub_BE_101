@@ -23,6 +23,7 @@ using SpringboardHub_BE_101.Service.SyllabusService;
 using SpringboardHub_BE_101.Service.SubjectService;
 using SpringboardHub_BE_101.Service.LectureService;
 using SpringboardHub_BE_101.Service.TitleService;
+using SpringboardHub_BE_101.Service.ArticleService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +70,7 @@ builder.Services.AddScoped<ISyllabusService, SyllabusService>();
 builder.Services.AddScoped<ISubjectService, SubjectService>();
 builder.Services.AddScoped<ILectureService, LectureService>();
 builder.Services.AddScoped<ITitleService, TitleService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
 
 var app = builder.Build();
 
