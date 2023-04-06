@@ -19,6 +19,7 @@ namespace SpringboardHub_BE_101.Config
             CreateMap<Lecture, ResponseUserLectureDetails>();
             CreateMap<Title, ResponseTitleDetails>();
             CreateMap<Article, ResponseArticleDetails>();
+            CreateMap<SubjectInSyllabus, ResponseSubjectSyllabus>();
             CreateMap<RequestAddBatch, Batch>();
             CreateMap<RequestAddCourse, Course>();
             CreateMap<RequestAddEnrollemnt, Enrollment>();
@@ -26,6 +27,7 @@ namespace SpringboardHub_BE_101.Config
             CreateMap<RequestAddSubject, Subject>();
             CreateMap<RequestAddTitle, Title>();
             CreateMap<RequestAddArticle, Article>();
+            CreateMap<RequestSubjectToSyllabus, SubjectInSyllabus>();
         }
     }
 }

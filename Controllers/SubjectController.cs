@@ -41,5 +41,11 @@ namespace SpringboardHub_BE_101.Controllers
         {
             return Ok(await _subjectService.UpdateSubject(updateSubject));
         }
+
+        [HttpPost("SubjectAddToSyllabus")]
+        public async Task<ActionResult<ServiceResponse<ResponseSubjectSyllabus>>> SubjectAddToSyllabus(RequestSubjectToSyllabus subjectToSyllabus)
+        {
+            return Ok(await _subjectService.SubjectAddToSyllabus(subjectToSyllabus));
+        }
     }
 }

@@ -134,6 +134,53 @@ namespace SpringboardHub_BE_101.Service.SubjectService
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<ResponseSubjectSyllabus>> SubjectAddToSyllabus(RequestSubjectToSyllabus subjectToSyllabus)
+        {
+            var serviceResponse = new ServiceResponse<ResponseSubjectSyllabus>();
+            try
+            {
+                if (!_context.Syllabus.Any(s => s.SyllabusID == subjectToSyllabus.SyllabusID))
+                {
+                    throw new Exception("Syllabus not found!");
+                }
+                else if (!_context.Subject.Any(s => s.SubjectID == subjectToSyllabus.SubjectID))
+                {
+                    throw new Exception("Subject not found!");
+                }
+                else if (!_context.Lecture.Any(l => l.LectureID == subjectToSyllabus.LectureID))
+                {
+                    throw new Exception("Lecture not found!");
+                }
+                else
+                {
+                    var subjectInSyllabus = _mapper.Map<SubjectInSyllabus>(subjectToSyllabus);
+                    subjectInSyllabus.CreatedDate = DateTime.Now;
+
+                    using (var transaction = _context.Database.BeginTransaction())
+                    {
+                        _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Enrollment ON");
+                        _context.SubjectInSyllabus.Add(subjectInSyllabus);
+                        await _context.SaveChangesAsync();
+                        _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Enrollment OFF");
+                        transaction.Commit();
+                    }
+
+                    serviceResponse.ResponseCode = AppConstants.DEFAULT_RESPONSE_CODE_SUCCSSES;
+                    serviceResponse.ResponseMessage = AppConstants.DEFAULT_RESPONSE_MESSAGE_SUCCSSES;
+                    serviceResponse.Payload = _mapper.Map<ResponseSubjectSyllabus>(_context.SubjectInSyllabus.OrderByDescending(s => s.SubjectInSyllabusID).FirstOrDefault());
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                serviceResponse.ResponseCode = AppConstants.DEFAULT_RESPONSE_CODE_SERVERSIDE_ERROR;
+                serviceResponse.ResponseMessage = e.ToString();
+            }
+
+            return serviceResponse;
+        }
+
         public string GenerateSubjectUID(int credit)
         {
             int lastID = 1;
@@ -148,5 +195,7 @@ namespace SpringboardHub_BE_101.Service.SubjectService
 
             return "com" + credit.ToString() + lastID.ToString();
         }
+
+
     }
 }
