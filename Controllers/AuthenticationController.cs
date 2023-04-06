@@ -31,6 +31,20 @@ namespace SpringboardHub_BE_101.Controllers
             return Ok(await _authRepo.AdminRegister(admin, newAdmin.Password));
         }
 
+        [HttpPost("Register/Lecture")]
+        public async Task<ActionResult<ServiceResponse<ResponseUserLectureDetails>>> LectureRegister(RequestAddUserLecture newLecture)
+        {
+            var lecture = new Lecture
+            {
+                FirstName = newLecture.FirstName,
+                LastName = newLecture.LastName,
+                Telephone = newLecture.Telephone,
+                Email = newLecture.Email,
+                NIC = newLecture.NIC
+            };
+            return Ok(await _authRepo.LectureRegister(lecture, newLecture.Password));
+        }
+
         [HttpPost("Register/Student")]
         public async Task<ActionResult<ServiceResponse<ResponseUserStudentDetails>>> StudentRegister(RequestAddUserStudent newStudent)
         {
@@ -42,5 +56,6 @@ namespace SpringboardHub_BE_101.Controllers
         {
             return Ok(await _authRepo.Login(loginUser));
         }
+
     }
 }

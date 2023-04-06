@@ -9,6 +9,7 @@ namespace SpringboardHub_BE_101.Auth
     {
         Task<ServiceResponse<ResponseUserAdminDetails>> AdminRegister(Admin newAdmin, string password);
         Task<ServiceResponse<ResponseUserStudentDetails>> StudentRegister(RequestAddUserStudent newStudent, string password);
+        Task<ServiceResponse<ResponseUserLectureDetails>> LectureRegister(Lecture newLecture, string password);
         Task<ServiceResponse<ResponseAuth>> Login(RequestUserLogin user);
         Task<bool> UserExists(UserTypes userType, string userName);
     }

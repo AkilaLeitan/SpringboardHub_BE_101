@@ -15,7 +15,8 @@ namespace SpringboardHub_BE_101.Config
             CreateMap<Student, ResponseUserStudentDetails>();
             CreateMap<Enrollment, ResponseEnrollementDetails>().ForMember(e => e.EnrolledDate, o => o.MapFrom(s => s.CreatedDate));
             CreateMap<Syllabus, ResponseSyllabusDetails>();
-             CreateMap<Subject, ResponseSubjectDetails>();
+            CreateMap<Subject, ResponseSubjectDetails>();
+            CreateMap<Lecture, ResponseUserLectureDetails>();
             CreateMap<RequestAddBatch, Batch>();
             CreateMap<RequestAddCourse, Course>();
             CreateMap<RequestAddEnrollemnt, Enrollment>();

@@ -130,6 +130,51 @@ namespace SpringboardHub_BE_101.Auth
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<ResponseUserLectureDetails>> LectureRegister(Lecture newLecture, string password)
+        {
+            var serviceResponse = new ServiceResponse<ResponseUserLectureDetails>();
+
+            try
+            {
+                newLecture.Password = GeneratePassword(password);
+                newLecture.UID = GenerateLectureUID();
+                newLecture.UserName = newLecture.UID;
+                newLecture.UserType = UserTypes.Lecture;
+                newLecture.CreatedDate = DateTime.Now;
+
+                //Lecture User Validations
+                if (!AppFunctions.EmailValidater(newLecture.Email))
+                {
+                    throw new Exception("Email not valid");
+                }
+
+                if (!AppFunctions.TelephoneValidater(newLecture.Telephone))
+                {
+                    throw new Exception("Telephone number not valid");
+                }
+
+                if (AppFunctions.StringNullOrEmpty(newLecture.FirstName) || AppFunctions.StringNullOrEmpty(newLecture.LastName))
+                {
+                    throw new Exception("name cannot be null or empty");
+                }
+
+                _context.Lecture.Add(newLecture);
+                await _context.SaveChangesAsync();
+
+                serviceResponse.ResponseCode = AppConstants.DEFAULT_RESPONSE_CODE_SUCCSSES;
+                serviceResponse.ResponseMessage = AppConstants.DEFAULT_RESPONSE_MESSAGE_SUCCSSES;
+                serviceResponse.Payload = _mapper.Map<ResponseUserLectureDetails>(_context.Lecture.OrderByDescending(s => s.LectureID).FirstOrDefault());
+
+            }
+            catch (Exception e)
+            {
+                serviceResponse.ResponseCode = AppConstants.DEFAULT_RESPONSE_CODE_SERVERSIDE_ERROR;
+                serviceResponse.ResponseMessage = e.ToString();
+            }
+
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<ResponseAuth>> Login(RequestUserLogin loginUser)
         {
             var serviceResponse = new ServiceResponse<ResponseAuth>();
