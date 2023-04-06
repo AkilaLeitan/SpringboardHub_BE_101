@@ -2,27 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SpringboardHub_BE_101.Service.CourseService;
 
 namespace SpringboardHub_BE_101.Controllers
 {
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class BatchController : BaseController
+    public class CourseController : BaseController
     {
-        private readonly IBatchService _batchService;
+        private readonly ICourseService _courseService;
 
-        public BatchController(IBatchService batchService)
+        public CourseController(ICourseService courseService)
         {
-            this._batchService = batchService;
+            this._courseService = courseService;
         }
 
-        [HttpGet("GetAllBatches")]
-        public async Task<ActionResult<ServiceResponse<ICollection<ResponseBatchDetails>>>> GetAllBatches()
+        [HttpGet("GetAllCourses")]
+        public async Task<ActionResult<ServiceResponse<ICollection<ResponseCourseDetails>>>> GetAllCourses()
         {
             if (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)!.Value == UserTypes.Admin.ToString())
             {
-                return Ok(await _batchService.GetAllBatches());
+                return Ok(await _courseService.GetAllCourses());
             }
             else
             {
@@ -34,12 +35,12 @@ namespace SpringboardHub_BE_101.Controllers
             }
         }
 
-        [HttpGet("GetBatchByID/{uid}")]
-        public async Task<ActionResult<ServiceResponse<ResponseBatchDetails>>> GetBatchByID(string uid)
+        [HttpGet("GetCourseByID/{uid}")]
+        public async Task<ActionResult<ServiceResponse<ResponseCourseDetails>>> GetCourseByID(string uid)
         {
             if (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)!.Value == UserTypes.Admin.ToString())
             {
-                return Ok(await _batchService.GetBatchByID(uid));
+                return Ok(await _courseService.GetCourseByID(uid));
             }
             else
             {
@@ -51,12 +52,12 @@ namespace SpringboardHub_BE_101.Controllers
             }
         }
 
-        [HttpPost("AddBatch")]
-        public async Task<ActionResult<ServiceResponse<ResponseBatchDetails>>> AddBatch(RequestAddBatch newBatch)
+        [HttpPost("AddCourse")]
+        public async Task<ActionResult<ServiceResponse<ResponseCourseDetails>>> AddCourse(RequestAddCourse newCourse)
         {
             if (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)!.Value == UserTypes.Admin.ToString())
             {
-                return Ok(await _batchService.AddBatch(newBatch));
+                return Ok(await _courseService.AddCourse(newCourse));
             }
             else
             {
@@ -68,12 +69,12 @@ namespace SpringboardHub_BE_101.Controllers
             }
         }
 
-        [HttpPut("UpdateBatch")]
-        public async Task<ActionResult<ServiceResponse<ResponseBatchDetails>>> UpdateBatch(RequestUpdateBatch updateBatch)
+        [HttpPut("UpdateCourse")]
+        public async Task<ActionResult<ServiceResponse<ResponseCourseDetails>>> UpdateCourse(RequestUpdateCourse updateCourse)
         {
             if (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)!.Value == UserTypes.Admin.ToString())
             {
-                return Ok(await _batchService.UpdateBatch(updateBatch));
+                return Ok(await _courseService.UpdateCourse(updateCourse));
             }
             else
             {

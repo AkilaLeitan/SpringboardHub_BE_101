@@ -6,6 +6,7 @@ global using Microsoft.AspNetCore.Mvc;
 global using AutoMapper;
 global using System.ComponentModel.DataAnnotations;
 global using Microsoft.AspNetCore.Authorization;
+global using System.Security.Claims;
 global using SpringboardHub_BE_101.Auth;
 global using SpringboardHub_BE_101.DTO;
 global using SpringboardHub_BE_101.DTO.Response;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using SpringboardHub_BE_101.Service.CourseService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +56,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IBatchService, BatchService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
 
 var app = builder.Build();
 
