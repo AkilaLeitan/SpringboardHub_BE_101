@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpringboardHub_BE_101.Data;
 
@@ -11,9 +12,11 @@ using SpringboardHub_BE_101.Data;
 namespace SpringboardHub_BE_101.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230406130551_AddArticle")]
+    partial class AddArticle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -431,7 +434,7 @@ namespace SpringboardHub_BE_101.Migrations
             modelBuilder.Entity("SpringboardHub_BE_101.Model.Article", b =>
                 {
                     b.HasOne("SpringboardHub_BE_101.Model.Lecture", "Lecture")
-                        .WithMany("Articles")
+                        .WithMany()
                         .HasForeignKey("LectureID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -541,8 +544,6 @@ namespace SpringboardHub_BE_101.Migrations
 
             modelBuilder.Entity("SpringboardHub_BE_101.Model.Lecture", b =>
                 {
-                    b.Navigation("Articles");
-
                     b.Navigation("SubjectInSyllabus");
                 });
 

@@ -17,6 +17,11 @@ namespace SpringboardHub_BE_101.Data
         public DbSet<Enrollment> Enrollment => Set<Enrollment>();
         public DbSet<Syllabus> Syllabus => Set<Syllabus>();
         public DbSet<Student> Student => Set<Student>();
+        public DbSet<Subject> Subject => Set<Subject>();
+        public DbSet<SubjectInSyllabus> SubjectInSyllabus => Set<SubjectInSyllabus>();
+        public DbSet<Lecture> Lecture => Set<Lecture>();
+        public DbSet<Title> Title => Set<Title>();
+        public DbSet<Article> Article => Set<Article>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +37,19 @@ namespace SpringboardHub_BE_101.Data
             .HasOne(s => s.Syllabus)
             .WithOne(b => b.Enrollment)
             .HasForeignKey<Syllabus>(e => e.EnrollmentID);
+
+            modelBuilder.Entity<SubjectInSyllabus>()
+            .HasOne(s => s.Subject)
+            .WithMany(ss => ss.SubjectInSyllabus);
+
+            modelBuilder.Entity<SubjectInSyllabus>()
+            .HasOne(s => s.Syllabus)
+            .WithMany(ss => ss.SubjectInSyllabus);
+
+            modelBuilder.Entity<Lecture>()
+            .HasOne(s => s.SubjectInSyllabus)
+            .WithOne(l => l.Lecture)
+            .HasForeignKey<SubjectInSyllabus>(ss => ss.LectureID);
         }
     }
 }

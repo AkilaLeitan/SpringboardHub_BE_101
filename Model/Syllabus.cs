@@ -13,5 +13,6 @@ namespace SpringboardHub_BE_101.Model
         public string CreatedBy { get; set; } = string.Empty;
         public Enrollment? Enrollment { get; set; }
         public int EnrollmentID { get; set; }
+        public ICollection<SubjectInSyllabus>? SubjectInSyllabus { get; set; }
     }
 }

@@ -13,5 +13,7 @@ namespace SpringboardHub_BE_101.Model
         public string? Description { get; set; }
         public int Credit { get; set; } = 0;
         public string? TextBook { get; set; }
+        public ICollection<SubjectInSyllabus>? SubjectInSyllabus { get; set; }
+        public ICollection<Title>? Titles { get; set; }
     }
 }

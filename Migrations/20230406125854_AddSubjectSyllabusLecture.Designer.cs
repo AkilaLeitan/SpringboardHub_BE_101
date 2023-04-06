@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpringboardHub_BE_101.Data;
 
@@ -11,9 +12,11 @@ using SpringboardHub_BE_101.Data;
 namespace SpringboardHub_BE_101.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230406125854_AddSubjectSyllabusLecture")]
+    partial class AddSubjectSyllabusLecture
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,52 +24,6 @@ namespace SpringboardHub_BE_101.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("SpringboardHub_BE_101.Model.Article", b =>
-                {
-                    b.Property<int>("ArticleID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArticleID"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LectureID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifyDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TitleID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Topic")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isUpdated")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("visibaleType")
-                        .HasColumnType("int");
-
-                    b.HasKey("ArticleID");
-
-                    b.HasIndex("LectureID");
-
-                    b.HasIndex("TitleID");
-
-                    b.ToTable("Article");
-                });
 
             modelBuilder.Entity("SpringboardHub_BE_101.Model.Batch", b =>
                 {
@@ -396,57 +353,6 @@ namespace SpringboardHub_BE_101.Migrations
                     b.ToTable("Syllabus");
                 });
 
-            modelBuilder.Entity("SpringboardHub_BE_101.Model.Title", b =>
-                {
-                    b.Property<int>("TitleID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TitleID"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifyDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SubjectID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TitleID");
-
-                    b.HasIndex("SubjectID");
-
-                    b.ToTable("Title");
-                });
-
-            modelBuilder.Entity("SpringboardHub_BE_101.Model.Article", b =>
-                {
-                    b.HasOne("SpringboardHub_BE_101.Model.Lecture", "Lecture")
-                        .WithMany("Articles")
-                        .HasForeignKey("LectureID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SpringboardHub_BE_101.Model.Title", "Title")
-                        .WithMany("Articles")
-                        .HasForeignKey("TitleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lecture");
-
-                    b.Navigation("Title");
-                });
-
             modelBuilder.Entity("SpringboardHub_BE_101.Model.Enrollment", b =>
                 {
                     b.HasOne("SpringboardHub_BE_101.Model.Batch", "Batch")
@@ -511,17 +417,6 @@ namespace SpringboardHub_BE_101.Migrations
                     b.Navigation("Enrollment");
                 });
 
-            modelBuilder.Entity("SpringboardHub_BE_101.Model.Title", b =>
-                {
-                    b.HasOne("SpringboardHub_BE_101.Model.Subject", "Subject")
-                        .WithMany("Titles")
-                        .HasForeignKey("SubjectID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Subject");
-                });
-
             modelBuilder.Entity("SpringboardHub_BE_101.Model.Batch", b =>
                 {
                     b.Navigation("Enrollments");
@@ -541,26 +436,17 @@ namespace SpringboardHub_BE_101.Migrations
 
             modelBuilder.Entity("SpringboardHub_BE_101.Model.Lecture", b =>
                 {
-                    b.Navigation("Articles");
-
                     b.Navigation("SubjectInSyllabus");
                 });
 
             modelBuilder.Entity("SpringboardHub_BE_101.Model.Subject", b =>
                 {
                     b.Navigation("SubjectInSyllabus");
-
-                    b.Navigation("Titles");
                 });
 
             modelBuilder.Entity("SpringboardHub_BE_101.Model.Syllabus", b =>
                 {
                     b.Navigation("SubjectInSyllabus");
-                });
-
-            modelBuilder.Entity("SpringboardHub_BE_101.Model.Title", b =>
-                {
-                    b.Navigation("Articles");
                 });
 #pragma warning restore 612, 618
         }

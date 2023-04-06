@@ -10,6 +10,9 @@ namespace SpringboardHub_BE_101.Model
         public int TitleID { get; set; } = AppConstants.DEFAULT;
         public string UID { get; set; } = AppConstants.DEFAULT_ID;
         public string Name { get; set; } = string.Empty;
+        public Subject? Subject { get; set; }
+        public int SubjectID { get; set; }= AppConstants.DEFAULT;
+        public ICollection<Article>? Articles { get; set; }
 
     }
 }

@@ -9,5 +9,7 @@ namespace SpringboardHub_BE_101.Model
     {
         public int LectureID { get; set; } = AppConstants.DEFAULT;
         public string UID { get; set; } = AppConstants.DEFAULT_ID;
+        public SubjectInSyllabus? SubjectInSyllabus { get; set; }
+        public ICollection<Article>? Articles { get; set; }
     }
 }
