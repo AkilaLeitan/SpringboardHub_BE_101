@@ -12,5 +12,7 @@ namespace SpringboardHub_BE_101.Service.StudentService
         Task<ServiceResponse<ICollection<ResponseUserStudentDetails>>> GetStudentsByBatch(string batchUID);
         Task<ServiceResponse<ResponseUserStudentDetails>> UpdateStudent(RequestUpdateUserStudent updateStudent);
         Task<ServiceResponse<NoParam>> DeleteStudent(string uid);
+        Task<ServiceResponse<ICollection<ResponseEnrollementDetails>>> StudentEnrollemnets(string studentUID);
+        Task<ServiceResponse<ICollection<ResponseStudentArticle>>> GetStudentArticles(string studentID);
     }
 }

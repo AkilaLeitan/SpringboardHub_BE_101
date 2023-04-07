@@ -36,6 +36,18 @@ namespace SpringboardHub_BE_101.Controllers
             return Ok(await _studentService.GetStudentsByBatch(batchUID));
         }
 
+        [HttpGet("GetStudentEnrollemnets")]
+        public async Task<ActionResult<ServiceResponse<ICollection<ResponseEnrollementDetails>>>> GetStudentEnrollemnets(string studentID)
+        {
+            return Ok(await _studentService.StudentEnrollemnets(studentID));
+        }
+
+        [HttpGet("GetStudentArticles")]
+        public async Task<ActionResult<ServiceResponse<ICollection<ResponseStudentArticle>>>> GetStudentArticles(string studentID)
+        {
+            return Ok(await _studentService.GetStudentArticles(studentID));
+        }
+
         [HttpPut("UpdateStudent")]
         public async Task<ActionResult<ServiceResponse<ResponseUserStudentDetails>>> UpdateStudent(RequestUpdateUserStudent updateStudent)
         {

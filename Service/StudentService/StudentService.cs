@@ -129,6 +129,36 @@ namespace SpringboardHub_BE_101.Service.StudentService
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<ICollection<ResponseEnrollementDetails>>> StudentEnrollemnets(string studentUID)
+        {
+            var serviceResponse = new ServiceResponse<ICollection<ResponseEnrollementDetails>>();
+
+            try
+            {
+                var targetStudent = await _context.Student.FirstOrDefaultAsync(s => s.UID == studentUID.ToLower());
+
+                if (targetStudent is null)
+                {
+                    throw new Exception("Student id is not correct");
+                }
+                else
+                {
+                    ICollection<Enrollment> enrollments = await _context.Enrollment.Where(e => e.BatchID == targetStudent.BatchID).ToListAsync();
+
+                    serviceResponse.ResponseCode = AppConstants.DEFAULT_RESPONSE_CODE_SUCCSSES;
+                    serviceResponse.ResponseMessage = AppConstants.DEFAULT_RESPONSE_MESSAGE_SUCCSSES;
+                    serviceResponse.Payload = _mapper.Map<ICollection<ResponseEnrollementDetails>>(enrollments);
+                }
+            }
+            catch (Exception e)
+            {
+                serviceResponse.ResponseCode = AppConstants.DEFAULT_RESPONSE_CODE_SERVERSIDE_ERROR;
+                serviceResponse.ResponseMessage = e.ToString();
+            }
+
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<ResponseUserStudentDetails>> UpdateStudent(RequestUpdateUserStudent updateStudent)
         {
             var serviceResponse = new ServiceResponse<ResponseUserStudentDetails>();
@@ -178,6 +208,113 @@ namespace SpringboardHub_BE_101.Service.StudentService
                 serviceResponse.ResponseMessage = e.ToString();
             }
 
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<ICollection<ResponseStudentArticle>>> GetStudentArticles(string studentID)
+        {
+            var serviceResponse = new ServiceResponse<ICollection<ResponseStudentArticle>>();
+            try
+            {
+                var targetStudent = await _context.Student.FirstOrDefaultAsync(s => s.UID == studentID.ToLower());
+
+                if (targetStudent is null)
+                {
+                    throw new Exception("Student Not found!");
+                }
+
+                ICollection<ResponseStudentArticle> payload = new List<ResponseStudentArticle>();
+
+
+                ICollection<Enrollment> enrollments = await _context.Enrollment.Where(e => e.BatchID == targetStudent.BatchID).ToListAsync();
+
+
+                foreach (Enrollment enrollment in enrollments)
+                {
+                    ICollection<ResponseSubjectLecture> payloadSubject = new List<ResponseSubjectLecture>();
+                    ResponseStudentArticle responseStudentArticle = new ResponseStudentArticle
+                    {
+                        BatchName = _context.Batch.FirstOrDefault(b => b.BatchID == enrollment.BatchID)!.BatchName,
+                        CourseName = _context.Course.FirstOrDefault(c => c.CourseID == enrollment.CourseID)!.CourseName,
+                    };
+
+                    int syllabusId = _context.Syllabus.FirstOrDefault(s => s.EnrollmentID == enrollment.EnrollmentID)!.SyllabusID;
+                    responseStudentArticle.SyllabusID = syllabusId;
+
+                    if (syllabusId == AppConstants.DEFAULT)
+                    {
+                        throw new Exception("No Syllabus Found");
+                    }
+
+                    ICollection<SubjectInSyllabus> subjectsList = _context.SubjectInSyllabus.Where(s => s.SyllabusID == syllabusId).ToList();
+
+                    if (subjectsList is null || subjectsList.Count == AppConstants.DEFAULT)
+                    {
+                        throw new Exception("NO Subjects Found");
+                    }
+
+
+                    foreach (SubjectInSyllabus subjectInSyllabus in subjectsList)
+                    {
+                        ICollection<ResponseTitleArticle> payloadTitle = new List<ResponseTitleArticle>();
+
+                        ResponseSubjectLecture responseSubjectLecture = new ResponseSubjectLecture
+                        {
+                            SubjectName = _context.Subject.FirstOrDefault(s => s.SubjectID == subjectInSyllabus.SubjectID)!.Name,
+                            LectureName = _context.Lecture.FirstOrDefault(l => l.LectureID == subjectInSyllabus.LectureID)!.FirstName
+                            + " " + _context.Lecture.FirstOrDefault(l => l.LectureID == subjectInSyllabus.LectureID)!.LastName,
+                            TitleList = payloadTitle
+                        };
+
+                        ICollection<ResponseArticleDetails> payloadArticle = new List<ResponseArticleDetails>();
+                        ICollection<Title> titleList = await _context.Title.Where(t => t.SubjectID == subjectInSyllabus.SubjectID).ToListAsync();
+                        if (titleList is null || titleList.Count == AppConstants.DEFAULT)
+                        {
+                            responseSubjectLecture.TitleList = null;
+                        }
+                        else
+                        {
+                            foreach (Title title in titleList)
+                            {
+                                ResponseTitleArticle responseTitleArticle = new ResponseTitleArticle
+                                {
+                                    Title = title.Name,
+                                    ArticleList = payloadArticle
+                                };
+
+                                ICollection<Article> articleList = await _context.Article
+                                .Where(a => a.TitleID == title.TitleID && a.LectureID == subjectInSyllabus.LectureID).ToListAsync();
+
+                                payloadArticle = articleList.Select(a => _mapper.Map<ResponseArticleDetails>(a)).ToList();
+                                if (payloadArticle is null || payloadArticle.Count == AppConstants.DEFAULT)
+                                {
+                                    responseTitleArticle.ArticleList = null;
+                                }
+                                else
+                                {
+                                    responseTitleArticle.ArticleList = payloadArticle;
+                                }
+
+                                payloadTitle.Add(responseTitleArticle);
+                            }
+                            responseSubjectLecture.TitleList = payloadTitle;
+                        }
+                        payloadSubject.Add(responseSubjectLecture);
+                        responseStudentArticle.SubjectList = payloadSubject;
+                    }
+                    payload.Add(responseStudentArticle);
+                }
+
+                serviceResponse.ResponseCode = AppConstants.DEFAULT_RESPONSE_CODE_SUCCSSES;
+                serviceResponse.ResponseMessage = AppConstants.DEFAULT_RESPONSE_MESSAGE_SUCCSSES;
+                serviceResponse.Payload = payload;
+
+            }
+            catch (Exception e)
+            {
+                serviceResponse.ResponseCode = AppConstants.DEFAULT_RESPONSE_CODE_SERVERSIDE_ERROR;
+                serviceResponse.ResponseMessage = e.ToString();
+            }
             return serviceResponse;
         }
     }
